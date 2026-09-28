@@ -1,399 +1,176 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Swamini Green Energy | Solar Solutions</title>
-<meta name="description" content="Swamini Green Energy - rooftop solar solutions, installation and support in Bahadurwadi, Walwa, Sangli.">
-<link rel="stylesheet" href="styles.css">
-</head>
-<body>
-<header>
-  <div class="logo">☀️ Swamini Green Energy</div>
-  <button class="hamburger" id="hamburger">
-    <span></span>
-    <span></span>
-    <span></span>
-  </button>
-  <nav id="nav-menu">
-    <a href="#services">Services</a>
-    <a href="#calculator">Calculator</a>
-    <a href="#gallery">Gallery</a>
-    <a href="#testimonials">Testimonials</a>
-    <a href="#contact">Contact</a>
-  </nav>
-</header>
+// Mobile navigation
+const hamburger = document.getElementById('hamburger');
+const navMenu = document.getElementById('nav-menu');
+if (hamburger && navMenu) {
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('active');
+    navMenu.classList.toggle('active');
+  });
 
-<section class="hero">
-  <div class="hero-content">
-    <p><b>Clean Energy • Smart Investment • Professional Installation</b></p>
-    <h1>Power Your Home & Business With Solar Energy</h1>
-    <p>Rooftop solar solutions, professional installation and support from Swamini Green Energy, serving Bahadurwadi, Walwa, Sangli and nearby areas.</p>
-    <a class="btn call" href="tel:+919284081148">📞 9284081148</a>
-    <a class="btn whatsapp" href="https://wa.me/919284081148?text=Hello%20Swamini%20Green%20Energy%2C%20I%20want%20a%20solar%20quotation." target="_blank">💬 WhatsApp</a>
-  </div>
-  <div class="visual">
-    <div class="sun">☀️</div>
-    <h2>Rooftop Solar Solutions</h2>
-    <p>Residential and commercial solar systems with installation and customer support.</p>
-  </div>
-</section>
+  document.querySelectorAll('#nav-menu a').forEach(link => {
+    link.addEventListener('click', () => {
+      hamburger.classList.remove('active');
+      navMenu.classList.remove('active');
+    });
+  });
+}
 
-<section id="services">
-  <h2 class="title">Our Services</h2>
-  <div class="grid">
-    <div class="card service-card">
-      <div class="card-icon">☀️</div>
-      <h3>Rooftop Solar</h3>
-      <p>Solar PV solutions for homes, shops, offices and eligible properties.</p>
-    </div>
-    <div class="card service-card">
-      <div class="card-icon">🔧</div>
-      <h3>Installation</h3>
-      <p>Structure, panels, inverter and electrical installation support.</p>
-    </div>
-    <div class="card service-card">
-      <div class="card-icon">📋</div>
-      <h3>Solar Process Support</h3>
-      <p>Assistance with documentation, inspection and rooftop-solar procedures.</p>
-    </div>
-    <div class="card service-card">
-      <div class="card-icon">⚡</div>
-      <h3>Consultation</h3>
-      <p>Guidance on capacity, equipment selection and project requirements.</p>
-    </div>
-    <div class="card service-card">
-      <div class="card-icon">🛠️</div>
-      <h3>Maintenance</h3>
-      <p>Post-installation assistance and troubleshooting support.</p>
-    </div>
-    <div class="card service-card">
-      <div class="card-icon">💼</div>
-      <h3>Commercial Solar</h3>
-      <p>Solar planning and installation support for businesses and larger projects.</p>
-    </div>
-  </div>
-</section>
+// Solar savings calculator
+const bill = document.getElementById('monthly-bill');
+const slider = document.getElementById('monthly-bill-slider');
+const billValue = document.getElementById('bill-value');
 
-<section id="calculator" class="calculator-section">
-  <h2 class="title">Solar Savings Calculator</h2>
-  <div class="calculator-container">
-    <div class="calculator-box">
-      <h3>Estimate Your Annual Savings</h3>
-      
-      <div class="form-group">
-        <label for="monthly-bill">Monthly Electricity Bill (₹)</label>
-        <input type="number" id="monthly-bill" placeholder="e.g., 2000" min="0" value="2000">
-        <div class="slider-value">₹<span id="bill-value">2000</span></div>
-        <input type="range" id="monthly-bill-slider" min="500" max="10000" step="100" value="2000" class="slider">
-      </div>
+if (bill && slider) {
+  bill.addEventListener('input', () => {
+    slider.value = bill.value;
+    if (billValue) billValue.textContent = bill.value;
+  });
 
-      <div class="form-group">
-        <label for="system-size">Solar System Size (kW)</label>
-        <select id="system-size">
-          <option value="1">1 kW</option>
-          <option value="2">2 kW</option>
-          <option value="3" selected>3 kW</option>
-          <option value="5">5 kW</option>
-          <option value="7">7 kW</option>
-          <option value="10">10 kW</option>
-          <option value="15">15 kW</option>
-        </select>
-      </div>
+  slider.addEventListener('input', () => {
+    bill.value = slider.value;
+    if (billValue) billValue.textContent = slider.value;
+  });
+}
 
-      <div class="form-group">
-        <label for="electricity-rate">Electricity Rate (₹/kWh)</label>
-        <input type="number" id="electricity-rate" placeholder="e.g., 8" min="0" step="0.5" value="8">
-        <small>Average rate in Maharashtra is ₹8/kWh</small>
-      </div>
+function calculateSavings() {
+  const monthlyBill = Number(bill?.value) || 0;
+  const systemSize = Number(document.getElementById('system-size')?.value) || 3;
+  const rate = Number(document.getElementById('electricity-rate')?.value) || 8;
 
-      <button class="btn calculate-btn" onclick="calculateSavings()">Calculate Savings</button>
+  if (monthlyBill <= 0 || rate <= 0) {
+    alert('Please enter valid values');
+    return;
+  }
 
-      <div id="results" class="results-box">
-        <div class="result-item">
-          <h4>Annual Energy Production</h4>
-          <p class="result-value"><span id="annual-production">0</span> kWh</p>
-        </div>
-        <div class="result-item">
-          <h4>Annual Savings</h4>
-          <p class="result-value savings">₹<span id="annual-savings">0</span></p>
-        </div>
-        <div class="result-item">
-          <h4>5-Year Savings</h4>
-          <p class="result-value">₹<span id="five-year-savings">0</span></p>
-        </div>
-        <div class="result-item">
-          <h4>Payback Period</h4>
-          <p class="result-value"><span id="payback-period">0</span> years</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+  const production = systemSize * 1200;
+  const annualSavings = production * rate;
+  const cost = systemSize * 75000;
 
-<section id="gallery" class="gallery-section">
-  <h2 class="title">Our Project Gallery</h2>
-  
-  <div class="gallery-container">
-    <div class="carousel">
-      <div class="carousel-track">
-        <div class="carousel-slide">
-          <div class="gallery-item">
-            <div class="gallery-image" style="background: linear-gradient(135deg, #087443, #00d084); display: flex; align-items: center; justify-content: center;">
-              <span style="font-size: 80px;">☀️</span>
-            </div>
-            <h3>Residential Installation - Bahadurwadi</h3>
-            <p>5 kW rooftop solar system installed on a residential building</p>
-            <p class="project-stats">System Size: 5kW | Annual Savings: ₹45,000</p>
-          </div>
-        </div>
-        <div class="carousel-slide">
-          <div class="gallery-item">
-            <div class="gallery-image" style="background: linear-gradient(135deg, #00d084, #087443); display: flex; align-items: center; justify-content: center;">
-              <span style="font-size: 80px;">🏢</span>
-            </div>
-            <h3>Commercial Solar - Sangli</h3>
-            <p>10 kW solar system for a commercial establishment</p>
-            <p class="project-stats">System Size: 10kW | Annual Savings: ₹90,000</p>
-          </div>
-        </div>
-        <div class="carousel-slide">
-          <div class="gallery-item">
-            <div class="gallery-image" style="background: linear-gradient(135deg, #f2b705, #ff9800); display: flex; align-items: center; justify-content: center;">
-              <span style="font-size: 80px;">🏠</span>
-            </div>
-            <h3>Farm Solar Solution - Walwa</h3>
-            <p>7 kW solar system for agricultural water pumping</p>
-            <p class="project-stats">System Size: 7kW | Annual Savings: ₹63,000</p>
-          </div>
-        </div>
-        <div class="carousel-slide">
-          <div class="gallery-item">
-            <div class="gallery-image" style="background: linear-gradient(135deg, #087443, #f2b705); display: flex; align-items: center; justify-content: center;">
-              <span style="font-size: 80px;">⚡</span>
-            </div>
-            <h3>Business Complex Solar</h3>
-            <p>3 kW solar installation for small business</p>
-            <p class="project-stats">System Size: 3kW | Annual Savings: ₹27,000</p>
-          </div>
-        </div>
-        <div class="carousel-slide">
-          <div class="gallery-item">
-            <div class="gallery-image" style="background: linear-gradient(135deg, #00d084, #087443); display: flex; align-items: center; justify-content: center;">
-              <span style="font-size: 80px;">🌞</span>
-            </div>
-            <h3>Residential Complex - Multi Building</h3>
-            <p>15 kW solar system for residential complex</p>
-            <p class="project-stats">System Size: 15kW | Annual Savings: ₹135,000</p>
-          </div>
-        </div>
-      </div>
+  const annualProduction = document.getElementById('annual-production');
+  const annualSavingsEl = document.getElementById('annual-savings');
+  const fiveYearSavingsEl = document.getElementById('five-year-savings');
+  const paybackPeriodEl = document.getElementById('payback-period');
 
-      <button class="carousel-btn prev" onclick="moveCarousel(-1)">❮</button>
-      <button class="carousel-btn next" onclick="moveCarousel(1)">❯</button>
-    </div>
+  if (annualProduction) annualProduction.textContent = production.toLocaleString('en-IN');
+  if (annualSavingsEl) annualSavingsEl.textContent = Math.round(annualSavings).toLocaleString('en-IN');
+  if (fiveYearSavingsEl) fiveYearSavingsEl.textContent = Math.round(annualSavings * 5).toLocaleString('en-IN');
+  if (paybackPeriodEl) paybackPeriodEl.textContent = (cost / annualSavings).toFixed(1);
+}
 
-    <div class="carousel-indicators">
-      <span class="indicator active" onclick="goToSlide(0)"></span>
-      <span class="indicator" onclick="goToSlide(1)"></span>
-      <span class="indicator" onclick="goToSlide(2)"></span>
-      <span class="indicator" onclick="goToSlide(3)"></span>
-      <span class="indicator" onclick="goToSlide(4)"></span>
-    </div>
-  </div>
-</section>
+// Project carousel
+let currentSlide = 0;
+const slides = document.querySelectorAll('.carousel-slide');
+const indicators = document.querySelectorAll('.indicator');
 
-<section id="testimonials" class="testimonials-section">
-  <h2 class="title">What Our Customers Say</h2>
-  
-  <div class="testimonials-container">
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Swamini Green Energy installed our solar system within time and budget. The team was professional and explained everything clearly. We're already saving significantly on electricity bills!"</p>
-      <div class="testimonial-author">
-        <div class="author-info">
-          <p>Bahadurwadi</p>
-        </div>
-      </div>
-    </div>
+function updateCarousel() {
+  const track = document.querySelector('.carousel-track');
+  if (!track || !slides.length) return;
 
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Excellent service from consultation to installation. They guided us through the entire process including government approvals. Highly recommended for commercial solar installations!"</p>
-      <div class="testimonial-author">
-        <div class="author-info">
-          <p>Koregaon</p>
-        </div>
-      </div>
-    </div>
+  track.style.transform = `translateX(-${currentSlide * 100}%)`;
+  indicators.forEach((indicator, index) => {
+    indicator.classList.toggle('active', index === currentSlide);
+  });
+}
 
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Best investment for our farm! The solar pumping system has reduced our operational costs drastically. Support team is always available for any queries."</p>
-      <div class="testimonial-author">
-        <div class="author-info">
-          <p>Dhavali</p>
-        </div>
-      </div>
-    </div>
+function moveCarousel(direction) {
+  currentSlide = (currentSlide + direction + slides.length) % slides.length;
+  updateCarousel();
+}
 
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Professional team with deep knowledge. They assessed our roof and recommended the perfect system size. Installation was clean and our home looks great!"</p>
-      <div class="testimonial-author">
-        <div class="author-info">
-          <p>Tasgaon</p>
-        </div>
-      </div>
-    </div>
+function goToSlide(index) {
+  currentSlide = index;
+  updateCarousel();
+}
 
-    <div class="testimonial-card">
-      <div class="stars">⭐⭐⭐⭐⭐</div>
-      <p class="testimonial-text">"Quick response, realistic quotation, and transparent process. The maintenance support is excellent. Already planning to add more capacity!"</p>
-      <div class="testimonial-author">
-        <div class="author-info">
-          <p>Shigaon</p>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
+if (slides.length) {
+  setInterval(() => moveCarousel(1), 5000);
+}
 
-<section id="contact" class="contact-section">
-  <h2 class="title">Get Your Solar Quotation</h2>
-  <div class="contact-container">
-    <div class="contact-form-box">
-      <h3>Send us your details</h3>
-      <form id="contact-form" onsubmit="submitForm(event)">
-        <div class="form-row">
-          <div class="form-group">
-            <label for="name">Full Name *</label>
-            <input type="text" id="name" name="name" required placeholder="Your name">
-          </div>
-          <div class="form-group">
-            <label for="phone">Phone Number *</label>
-            <input type="tel" id="phone" name="phone" required placeholder="9284081148">
-          </div>
-        </div>
+// Testimonials: show locations only, without names.
+const testimonialLocations = ['Bahadurwadi', 'Koregaon', 'Dhavali', 'Tasgaon', 'Shigaon'];
+document.querySelectorAll('.testimonial-card').forEach((card, index) => {
+  const name = card.querySelector('.author-info h4');
+  const location = card.querySelector('.author-info p');
+  if (name) name.remove();
+  if (location) location.textContent = testimonialLocations[index] || '';
+});
 
-        <div class="form-row">
-          <div class="form-group">
-            <label for="email">Email Address</label>
-            <input type="email" id="email" name="email" placeholder="your@email.com">
-          </div>
-          <div class="form-group">
-            <label for="location">Location *</label>
-            <input type="text" id="location" name="location" required placeholder="Your city/area">
-          </div>
-        </div>
+// Quotation form
+const contactForm = document.getElementById('contact-form');
+const formMessage = document.getElementById('form-message');
 
-        <div class="form-group">
-          <label for="monthly-consumption">Monthly Electricity Consumption (kWh) *</label>
-          <input type="number" id="monthly-consumption" name="consumption" required placeholder="e.g., 300" min="0">
-        </div>
+function submitForm(event) {
+  event.preventDefault();
 
-        <div class="form-group">
-          <label for="property-type">Property Type *</label>
-          <select id="property-type" name="property_type" required>
-            <option value="">Select property type</option>
-            <option value="residential">Residential</option>
-            <option value="commercial">Commercial</option>
-            <option value="industrial">Industrial</option>
-            <option value="agricultural">Agricultural</option>
-            <option value="other">Other</option>
-          </select>
-        </div>
+  const data = {
+    name: document.getElementById('name')?.value.trim() || '',
+    phone: document.getElementById('phone')?.value.trim() || '',
+    email: document.getElementById('email')?.value.trim() || '',
+    location: document.getElementById('location')?.value.trim() || '',
+    consumption: document.getElementById('monthly-consumption')?.value || '',
+    propertyType: document.getElementById('property-type')?.value || '',
+    message: document.getElementById('message')?.value.trim() || ''
+  };
 
-        <div class="form-group">
-          <label for="message">Message (optional)</label>
-          <textarea id="message" name="message" placeholder="Tell us more about your requirements..."></textarea>
-        </div>
+  if (!/^\d{10}$/.test(data.phone.replace(/\D/g, ''))) {
+    if (formMessage) {
+      formMessage.textContent = 'Please enter a valid 10-digit phone number.';
+      formMessage.className = 'form-message error';
+    }
+    return;
+  }
 
-        <div class="form-group checkbox">
-          <input type="checkbox" id="consent" name="consent" required>
-          <label for="consent">I agree to receive solar quotations and updates</label>
-        </div>
+  if (Number(data.consumption) <= 0) {
+    if (formMessage) {
+      formMessage.textContent = 'Please enter valid electricity consumption.';
+      formMessage.className = 'form-message error';
+    }
+    return;
+  }
 
-        <button type="submit" class="btn submit-btn">📧 Send Quotation Request</button>
-      </form>
+  localStorage.setItem('lastQuotationRequest', JSON.stringify(data));
 
-      <div id="form-message" class="form-message"></div>
-    </div>
+  const message = `Hello Swamini Green Energy,\n\nName: ${data.name}\nPhone: ${data.phone}\nLocation: ${data.location}\nMonthly Consumption: ${data.consumption} kWh\nProperty Type: ${data.propertyType}\n${data.message}`;
+  const whatsapp = `https://wa.me/919284081148?text=${encodeURIComponent(message)}`;
 
-    <div class="contact-info-box">
-      <h3>Contact Information</h3>
-      
-      <div class="info-item">
-        <h4>📍 Business Address</h4>
-        <p>Plot No. 6, Gat No. 1083,<br>Sarkarwada, Near Old Grampanchayat,<br>Bahadurwadi, Tal-Walwa, Dist-Sangli, Maharashtra</p>
-      </div>
+  if (formMessage) {
+    formMessage.innerHTML = `✅ Request received! <a class="btn whatsapp" href="${whatsapp}" target="_blank" rel="noopener noreferrer">💬 Send via WhatsApp</a>`;
+    formMessage.className = 'form-message success';
+  }
 
-      <div class="info-item">
-        <h4>📞 Phone</h4>
-        <p><a href="tel:+919284081148">9284081148</a><br><a href="tel:+917666844094">7666844094</a></p>
-      </div>
+  if (contactForm) contactForm.reset();
+}
 
-      <div class="info-item">
-        <h4>📧 Email</h4>
-        <p><a href="mailto:ghorpaderaj0@gmail.com">ghorpaderaj0@gmail.com</a></p>
-      </div>
+if (contactForm) contactForm.addEventListener('submit', submitForm);
 
-      <div class="info-item">
-        <h4>💬 Quick Connect</h4>
-        <a href="https://wa.me/919284081148" class="btn whatsapp" target="_blank">💬 WhatsApp Us</a>
-      </div>
+// Smooth scrolling and reveal animations
+const anchors = document.querySelectorAll('a[href^="#"]');
+anchors.forEach(anchor => {
+  anchor.addEventListener('click', event => {
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) {
+      event.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth' });
+    }
+  });
+});
 
-      <div class="info-item service-hours">
-        <h4>⏰ Service Hours</h4>
-        <p>Monday - Saturday: 9:00 AM - 6:00 PM<br>Sunday: 10:00 AM - 4:00 PM<br>Emergency support available</p>
-      </div>
-    </div>
-  </div>
-</section>
+if ('IntersectionObserver' in window) {
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.style.opacity = '1';
+        entry.target.style.transform = 'translateY(0)';
+      }
+    });
+  }, { threshold: 0.1 });
 
-<section id="about" class="about-section">
-  <h2 class="title">Why Swamini Green Energy?</h2>
-  <div class="grid">
-    <div class="card about-card">
-      <div class="card-icon">🎯</div>
-      <h3>Local Service</h3>
-      <p>Serving Bahadurwadi, Walwa, Sangli and nearby areas with personalized attention.</p>
-    </div>
-    <div class="card about-card">
-      <div class="card-icon">🤝</div>
-      <h3>Complete Assistance</h3>
-      <p>Support from solar planning through installation, commissioning, and maintenance.</p>
-    </div>
-    <div class="card about-card">
-      <div class="card-icon">✅</div>
-      <h3>Quality Focus</h3>
-      <p>Focus on proper installation practices and suitable solar components.</p>
-    </div>
-    <div class="card about-card">
-      <div class="card-icon">💰</div>
-      <h3>Best ROI</h3>
-      <p>Transparent pricing and realistic payback period calculations.</p>
-    </div>
-    <div class="card about-card">
-      <div class="card-icon">🔧</div>
-      <h3>Ongoing Support</h3>
-      <p>Post-installation assistance and troubleshooting support always available.</p>
-    </div>
-    <div class="card about-card">
-      <div class="card-icon">🌱</div>
-      <h3>Eco-Friendly</h3>
-      <p>Reduce your carbon footprint while saving on electricity bills.</p>
-    </div>
-  </div>
-</section>
+  document.querySelectorAll('.card, .testimonial-card, .gallery-item').forEach(element => {
+    element.style.opacity = '0';
+    element.style.transform = 'translateY(20px)';
+    element.style.transition = 'opacity .6s ease, transform .6s ease';
+    observer.observe(element);
+  });
+}
 
-<footer>
-  <b>Swamini Green Energy</b><br>
-  Solar Solutions • Installation • Support<br>
-  Bahadurwadi, Tal-Walwa, Dist-Sangli, Maharashtra<br>
-  <small>&copy; 2026 Swamini Green Energy. All rights reserved.</small>
-</footer>
-
-<script src="script.js"></script>
-</body>
-</html>
+window.addEventListener('load', calculateSavings);
