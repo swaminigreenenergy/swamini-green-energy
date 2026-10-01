@@ -151,11 +151,30 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 18px 8%;
+  padding: 12px 8%;
   background: linear-gradient(135deg, rgba(13, 90, 61, 0.98), rgba(15, 106, 71, 0.98));
   backdrop-filter: blur(10px);
   border-bottom: 2px solid rgba(255, 255, 255, 0.15);
   box-shadow: 0 8px 32px rgba(10, 35, 24, 0.4);
+}
+
+/* Brand logo styling */
+.brand-wrap {
+  display: flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+.brand-logo {
+  height: 70px;
+  width: auto;
+  display: block;
+  transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.3));
+}
+
+.brand-logo:hover {
+  transform: scale(1.05);
 }
 
 .logo {
@@ -173,6 +192,7 @@ header {
   display: flex;
   gap: 22px;
   align-items: center;
+  margin-left: auto;
 }
 
 #nav-menu a {
@@ -215,6 +235,7 @@ header {
   cursor: pointer;
   box-shadow: 0 8px 20px rgba(247, 181, 0, 0.3);
   transition: all 0.3s ease;
+  margin-left: auto;
 }
 
 .hamburger:hover {
@@ -991,15 +1012,26 @@ footer small {
   .bg-shape-1, .bg-shape-2, .bg-shape-3 {
     display: none;
   }
+
+  .brand-logo {
+    height: 60px;
+  }
 }
 
 @media (max-width: 720px) {
   header {
-    padding: 14px 20px;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+  }
+
+  .brand-logo {
+    height: 50px;
+    margin-right: 10px;
   }
 
   .hamburger {
     display: block;
+    margin-left: auto;
   }
 
   #nav-menu {
@@ -1016,6 +1048,7 @@ footer small {
     padding: 16px 18px;
     border: 1px solid rgba(255, 255, 255, 0.2);
     backdrop-filter: blur(10px);
+    margin-left: 0;
   }
 
   #nav-menu.active {
