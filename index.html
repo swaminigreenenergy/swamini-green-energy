@@ -147,10 +147,37 @@
     <h2 class="title">Our Project Gallery</h2>
 
     <div class="gallery-admin">
-      <button class="btn add-project-btn" type="button" onclick="toggleProjectForm()">➕ Add New Project</button>
+      <div class="gallery-login-bar">
+        <div id="admin-auth-status">Gallery admin: Not signed in</div>
+        <button class="btn" type="button" onclick="toggleAdminLogin()">🔐 Admin Login</button>
+        <button class="btn call" id="admin-logout-btn" type="button" onclick="adminLogout()" hidden>Logout</button>
+      </div>
+      <div id="admin-login-panel" class="project-form-panel" hidden>
+        <h3>Gallery Admin Login</h3>
+        <p class="admin-note">Sign in with the Supabase admin account to add or remove projects.</p>
+        <form id="admin-login-form">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="admin-email">Email</label>
+              <input id="admin-email" type="email" required placeholder="Admin email">
+            </div>
+            <div class="form-group">
+              <label for="admin-password">Password</label>
+              <input id="admin-password" type="password" required placeholder="Password">
+            </div>
+          </div>
+          <div class="project-form-actions">
+            <button class="btn" type="submit">🔐 Sign In</button>
+            <button class="btn call" type="button" onclick="toggleAdminLogin()">Cancel</button>
+          </div>
+        </form>
+        <div id="admin-login-message" class="form-message"></div>
+      </div>
+
+      <button class="btn add-project-btn" id="add-project-button" type="button" onclick="toggleProjectForm()" hidden>➕ Add New Project</button>
       <div id="project-form-panel" class="project-form-panel" hidden>
         <h3>Add Project to Gallery</h3>
-        <p class="admin-note">Add a project photo and details. Projects are saved on this device/browser.</p>
+        <p class="admin-note">Add a project photo and details. Projects are saved securely in Supabase and will appear on the website for visitors.</p>
         <form id="project-form">
           <div class="form-row">
             <div class="form-group">
@@ -444,6 +471,7 @@
     <small>&copy; 2026 Swamini Green Energy. All rights reserved.</small>
   </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
