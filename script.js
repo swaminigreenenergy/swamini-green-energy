@@ -59,13 +59,18 @@ function calculateSavings() {
 
 // Project carousel
 let currentSlide = 0;
-const slides = document.querySelectorAll('.carousel-slide');
-const indicators = document.querySelectorAll('.indicator');
+
+function getSlides() {
+  return document.querySelectorAll('.carousel-slide');
+}
 
 function updateCarousel() {
   const track = document.querySelector('.carousel-track');
+  const slides = getSlides();
+  const indicators = document.querySelectorAll('.indicator');
   if (!track || !slides.length) return;
 
+  currentSlide = Math.min(currentSlide, slides.length - 1);
   track.style.transform = `translateX(-${currentSlide * 100}%)`;
   indicators.forEach((indicator, index) => {
     indicator.classList.toggle('active', index === currentSlide);
@@ -73,18 +78,20 @@ function updateCarousel() {
 }
 
 function moveCarousel(direction) {
+  const slides = getSlides();
+  if (!slides.length) return;
   currentSlide = (currentSlide + direction + slides.length) % slides.length;
   updateCarousel();
 }
 
 function goToSlide(index) {
-  currentSlide = index;
+  const slides = getSlides();
+  if (!slides.length) return;
+  currentSlide = Math.max(0, Math.min(index, slides.length - 1));
   updateCarousel();
 }
 
-if (slides.length) {
-  setInterval(() => moveCarousel(1), 5000);
-}
+if (getSlides().length) setInterval(() => moveCarousel(1), 5000);
 
 // Testimonials: show locations only, without names.
 const testimonialLocations = ['Bahadurwadi', 'Koregaon', 'Dhavali', 'Tasgaon', 'Shigaon'];
@@ -174,3 +181,117 @@ if ('IntersectionObserver' in window) {
 }
 
 window.addEventListener('load', calculateSavings);
+
+
+/* ===== Add New Project system ===== */
+const PROJECT_STORAGE_KEY = 'swaminiGalleryProjects';
+
+function toggleProjectForm() {
+  const panel = document.getElementById('project-form-panel');
+  if (!panel) return;
+  panel.hidden = !panel.hidden;
+  if (!panel.hidden) panel.scrollIntoView({behavior:'smooth', block:'center'});
+}
+
+function readGalleryProjects() {
+  try { return JSON.parse(localStorage.getItem(PROJECT_STORAGE_KEY) || '[]'); }
+  catch(e) { return []; }
+}
+
+function saveGalleryProjects(projects) {
+  localStorage.setItem(PROJECT_STORAGE_KEY, JSON.stringify(projects));
+}
+
+function escapeHtml(value) {
+  return String(value || '').replace(/[&<>"']/g, ch => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[ch]));
+}
+
+function renderSavedProjects() {
+  const track = document.querySelector('.carousel-track');
+  const indicatorsBox = document.querySelector('.carousel-indicators');
+  const note = document.getElementById('saved-projects-note');
+  if (!track || !indicatorsBox) return;
+
+  track.querySelectorAll('.dynamic-project-slide').forEach(el => el.remove());
+  const projects = readGalleryProjects();
+
+  projects.forEach((project, i) => {
+    const slide = document.createElement('div');
+    slide.className = 'carousel-slide dynamic-project-slide';
+    slide.innerHTML = `
+      <div class="gallery-item">
+        <img class="dynamic-project-image" src="${project.photo}" alt="${escapeHtml(project.title)}">
+        <h3>${escapeHtml(project.title)}</h3>
+        <p>${escapeHtml(project.description)}</p>
+        <p class="project-stats">System Size: ${escapeHtml(project.size || '—')} | Annual Savings: ${escapeHtml(project.savings || '—')} | Location: ${escapeHtml(project.location || '—')}</p>
+        <button class="delete-project-btn" type="button" onclick="deleteGalleryProject(${i})">🗑️ Remove Project</button>
+      </div>`;
+    track.appendChild(slide);
+  });
+
+  const count = track.querySelectorAll('.carousel-slide').length;
+  indicatorsBox.innerHTML = '';
+  for(let i=0;i<count;i++) {
+    const indicator = document.createElement('span');
+    indicator.className = 'indicator' + (i === currentSlide ? ' active' : '');
+    indicator.setAttribute('aria-label', 'Go to slide ' + (i+1));
+    indicator.onclick = () => goToSlide(i);
+    indicatorsBox.appendChild(indicator);
+  }
+  currentSlide = Math.min(currentSlide, Math.max(0, count - 1));
+  updateCarousel();
+  if(note) note.textContent = projects.length ? projects.length + ' project(s) saved on this device.' : '';
+}
+
+function deleteGalleryProject(index) {
+  const projects = readGalleryProjects();
+  if (!projects[index]) return;
+  if (!confirm('Remove this project from this device?')) return;
+  projects.splice(index, 1);
+  saveGalleryProjects(projects);
+  currentSlide = 0;
+  renderSavedProjects();
+}
+
+const projectForm = document.getElementById('project-form');
+if (projectForm) {
+  projectForm.addEventListener('submit', event => {
+    event.preventDefault();
+    const file = document.getElementById('project-photo')?.files?.[0];
+    const message = document.getElementById('project-form-message');
+    if (!file) return;
+
+    if (!file.type.startsWith('image/')) {
+      if(message){ message.textContent='Please select an image file.'; message.className='form-message error'; }
+      return;
+    }
+    if (file.size > 4 * 1024 * 1024) {
+      if(message){ message.textContent='Please use an image smaller than 4 MB.'; message.className='form-message error'; }
+      return;
+    }
+
+    const reader = new FileReader();
+    reader.onload = () => {
+      try {
+        const projects = readGalleryProjects();
+        projects.push({
+          title: document.getElementById('project-title').value.trim(),
+          location: document.getElementById('project-location').value.trim(),
+          size: document.getElementById('project-size').value.trim(),
+          savings: document.getElementById('project-savings').value.trim(),
+          description: document.getElementById('project-description').value.trim(),
+          photo: reader.result
+        });
+        saveGalleryProjects(projects);
+        projectForm.reset();
+        if(message){ message.textContent='✅ Project added successfully on this device.'; message.className='form-message success'; }
+        renderSavedProjects();
+      } catch(e) {
+        if(message){ message.textContent='Storage limit reached. Please use a smaller photo.'; message.className='form-message error'; }
+      }
+    };
+    reader.readAsDataURL(file);
+  });
+}
+
+window.addEventListener('load', renderSavedProjects);
