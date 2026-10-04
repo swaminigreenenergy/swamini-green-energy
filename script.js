@@ -181,3 +181,69 @@ if ('IntersectionObserver' in window) {
 }
 
 window.addEventListener('load', calculateSavings);
+
+// Project gallery category tabs
+let activeGalleryCategory = 'residential';
+
+function getVisibleGallerySlides() {
+  return Array.from(document.querySelectorAll('.carousel-slide')).filter(slide =>
+    (slide.dataset.category || 'residential') === activeGalleryCategory
+  );
+}
+
+function filterGallery(category) {
+  activeGalleryCategory = category;
+  currentSlide = 0;
+
+  document.querySelectorAll('.gallery-tab').forEach(tab => {
+    const active = tab.dataset.galleryTab === category;
+    tab.classList.toggle('active', active);
+    tab.setAttribute('aria-selected', active ? 'true' : 'false');
+  });
+
+  document.querySelectorAll('.carousel-slide').forEach(slide => {
+    slide.hidden = (slide.dataset.category || 'residential') !== category;
+  });
+
+  const indicatorsBox = document.querySelector('.carousel-indicators');
+  const slides = getVisibleGallerySlides();
+  if (indicatorsBox) {
+    indicatorsBox.innerHTML = '';
+    slides.forEach((slide, index) => {
+      const indicator = document.createElement('span');
+      indicator.className = 'indicator' + (index === 0 ? ' active' : '');
+      indicator.setAttribute('aria-label', 'Go to slide ' + (index + 1));
+      indicator.onclick = () => {
+        currentSlide = index;
+        updateGalleryCarousel();
+      };
+      indicatorsBox.appendChild(indicator);
+    });
+  }
+  updateGalleryCarousel();
+}
+
+function updateGalleryCarousel() {
+  const slides = getVisibleGallerySlides();
+  const track = document.querySelector('.carousel-track');
+  if (!track || !slides.length) return;
+  const slideWidth = 100 / slides.length;
+  track.style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+  slides.forEach((slide, index) => {
+    slide.style.position = 'relative';
+    slide.style.left = '0';
+    slide.style.width = '100%';
+  });
+  document.querySelectorAll('.carousel-slide:not([hidden])').forEach((slide, index) => {
+    slide.style.transform = 'translateX(' + (index * 0) + '%)';
+  });
+  document.querySelectorAll('.indicator').forEach((indicator, index) => {
+    indicator.classList.toggle('active', index === currentSlide);
+  });
+}
+
+document.querySelectorAll('.gallery-tab').forEach(tab => {
+  tab.addEventListener('click', () => filterGallery(tab.dataset.galleryTab));
+});
+
+window.addEventListener('load', () => filterGallery('residential'));
