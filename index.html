@@ -145,77 +145,6 @@
 
   <section id="gallery" class="gallery-section">
     <h2 class="title">Our Project Gallery</h2>
-
-    <div class="gallery-admin">
-      <div class="gallery-login-bar">
-        <div id="admin-auth-status">Gallery admin: Not signed in</div>
-        <button class="btn" type="button" onclick="toggleAdminLogin()">🔐 Admin Login</button>
-        <button class="btn call" id="admin-logout-btn" type="button" onclick="adminLogout()" hidden>Logout</button>
-      </div>
-      <div id="admin-login-panel" class="project-form-panel" hidden>
-        <h3>Gallery Admin Login</h3>
-        <p class="admin-note">Sign in with the Supabase admin account to add or remove projects.</p>
-        <form id="admin-login-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="admin-email">Email</label>
-              <input id="admin-email" type="email" required placeholder="Admin email">
-            </div>
-            <div class="form-group">
-              <label for="admin-password">Password</label>
-              <input id="admin-password" type="password" required placeholder="Password">
-            </div>
-          </div>
-          <div class="project-form-actions">
-            <button class="btn" type="submit">🔐 Sign In</button>
-            <button class="btn call" type="button" onclick="toggleAdminLogin()">Cancel</button>
-          </div>
-        </form>
-        <div id="admin-login-message" class="form-message"></div>
-      </div>
-
-      <button class="btn add-project-btn" id="add-project-button" type="button" onclick="toggleProjectForm()" hidden>➕ Add New Project</button>
-      <div id="project-form-panel" class="project-form-panel" hidden>
-        <h3>Add Project to Gallery</h3>
-        <p class="admin-note">Add a project photo and details. Projects are saved securely in Supabase and will appear on the website for visitors.</p>
-        <form id="project-form">
-          <div class="form-row">
-            <div class="form-group">
-              <label for="project-title">Project Name *</label>
-              <input id="project-title" required placeholder="e.g. 5 kW Rooftop Solar - Bahadurwadi">
-            </div>
-            <div class="form-group">
-              <label for="project-location">Location</label>
-              <input id="project-location" placeholder="e.g. Bahadurwadi, Walwa">
-            </div>
-          </div>
-          <div class="form-row">
-            <div class="form-group">
-              <label for="project-size">System Size</label>
-              <input id="project-size" placeholder="e.g. 5 kW">
-            </div>
-            <div class="form-group">
-              <label for="project-savings">Annual Savings</label>
-              <input id="project-savings" placeholder="e.g. ₹45,000">
-            </div>
-          </div>
-          <div class="form-group">
-            <label for="project-description">Project Details</label>
-            <textarea id="project-description" placeholder="Describe the installation, panels, inverter, customer requirement, etc."></textarea>
-          </div>
-          <div class="form-group">
-            <label for="project-photo">Project Photo *</label>
-            <input id="project-photo" type="file" accept="image/*" required>
-          </div>
-          <div class="project-form-actions">
-            <button class="btn" type="submit">💾 Add Project</button>
-            <button class="btn call" type="button" onclick="toggleProjectForm()">Cancel</button>
-          </div>
-        </form>
-        <div id="project-form-message" class="form-message"></div>
-      </div>
-    </div>
-
     <div class="gallery-container">
       <div class="carousel">
         <div class="carousel-track">
@@ -470,8 +399,6 @@
     Bahadurwadi, Tal-Walwa, Dist-Sangli, Maharashtra<br>
     <small>&copy; 2026 Swamini Green Energy. All rights reserved.</small>
   </footer>
-
-  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="script.js"></script>
 </body>
 </html>
