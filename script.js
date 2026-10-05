@@ -119,7 +119,14 @@ async async function submitForm(event) {
     message: document.getElementById('message')?.value.trim() || ''
   };
 
-  const phoneDigits = data.phone.replace(/\D/g, '');
+  let phoneDigits = data.phone.replace(/\D/g, '');
+  // Accept 10-digit Indian numbers, 0XXXXXXXXXX, or +91XXXXXXXXXX.
+  if (phoneDigits.length === 12 && phoneDigits.startsWith('91')) {
+    phoneDigits = phoneDigits.slice(2);
+  }
+  if (phoneDigits.length === 11 && phoneDigits.startsWith('0')) {
+    phoneDigits = phoneDigits.slice(1);
+  }
   if (!/^\d{10}$/.test(phoneDigits)) {
     if (formMessage) {
       formMessage.textContent = 'Please enter a valid 10-digit phone number.';
@@ -143,6 +150,8 @@ async async function submitForm(event) {
 
   const formData = new FormData();
   formData.append('_subject', 'New Solar Quotation Request - Swamini Green Energy');
+  formData.append('_replyto', data.email || 'ghorpaderaj0@gmail.com');
+  formData.append('_url', window.location.href);
   formData.append('_captcha', 'false');
   formData.append('_template', 'table');
   formData.append('Customer Name', data.name);
@@ -156,8 +165,11 @@ async async function submitForm(event) {
   try {
     const response = await fetch('https://formsubmit.co/ajax/ghorpaderaj0@gmail.com', {
       method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
+      body: JSON.stringify(Object.fromEntries(formData.entries())),
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json'
+      }
     });
 
     const result = await response.json();
