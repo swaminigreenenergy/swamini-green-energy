@@ -245,7 +245,7 @@
     <div class="contact-container">
       <div class="contact-form-box">
         <h3>Send us your details</h3>
-        <form id="contact-form">
+        <form id="contact-form" action="https://formsubmit.co/ghorpaderaj0@gmail.com" method="POST">
           <div class="form-row">
             <div class="form-group">
               <label for="name">Full Name *</label>
@@ -296,6 +296,10 @@
           </div>
 
           <button type="submit" class="btn submit-btn">📧 Send Quotation Request</button>
+          <input type="hidden" name="_subject" value="New Solar Quotation Request - Swamini Green Energy">
+          <input type="hidden" name="_captcha" value="false">
+          <input type="hidden" name="_template" value="table">
+          <input type="hidden" name="_next" value="https://swaminigreenenergy.github.io/swamini-green-energy/">
         </form>
 
         <div id="form-message" class="form-message"></div>
