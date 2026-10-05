@@ -106,7 +106,7 @@ document.querySelectorAll('.testimonial-card').forEach((card, index) => {
 const contactForm = document.getElementById('contact-form');
 const formMessage = document.getElementById('form-message');
 
-async function submitForm(event) {
+async async function submitForm(event) {
   event.preventDefault();
 
   const data = {
@@ -119,7 +119,8 @@ async function submitForm(event) {
     message: document.getElementById('message')?.value.trim() || ''
   };
 
-  if (!/^\\d{10}$/.test(data.phone.replace(/\\D/g, ''))) {
+  const phoneDigits = data.phone.replace(/\D/g, '');
+  if (!/^\d{10}$/.test(phoneDigits)) {
     if (formMessage) {
       formMessage.textContent = 'Please enter a valid 10-digit phone number.';
       formMessage.className = 'form-message error';
@@ -161,8 +162,8 @@ async function submitForm(event) {
 
     const result = await response.json();
 
-    if (!response.ok || result.success !== 'true') {
-      throw new Error('Form submission failed');
+    if (!response.ok || result.success !== true && result.success !== 'true') {
+      throw new Error('Email service did not accept the request');
     }
 
     localStorage.setItem('lastQuotationRequest', JSON.stringify(data));
@@ -174,7 +175,7 @@ Phone: ${data.phone}
 Location: ${data.location}
 Monthly Consumption: ${data.consumption} kWh
 Property Type: ${data.propertyType}
-${data.message}`;
+${data.message || ''}`;
 
     const whatsapp = `https://wa.me/919284081148?text=${encodeURIComponent(message)}`;
 
@@ -187,13 +188,32 @@ ${data.message}`;
   } catch (error) {
     console.error('Quotation form error:', error);
 
+    const subject = encodeURIComponent('Solar Quotation Request - ' + data.name);
+    const body = encodeURIComponent(
+      'Customer Name: ' + data.name + '\n' +
+      'Phone: ' + data.phone + '\n' +
+      'Email: ' + (data.email || 'Not provided') + '\n' +
+      'Location: ' + data.location + '\n' +
+      'Monthly Consumption: ' + data.consumption + ' kWh\n' +
+      'Property Type: ' + data.propertyType + '\n' +
+      'Message: ' + (data.message || 'No additional message')
+    );
+    const mailto = 'mailto:ghorpaderaj0@gmail.com?subject=' + subject + '&body=' + body;
+
+    const whatsapp = 'https://wa.me/919284081148?text=' + encodeURIComponent(
+      'Hello Swamini Green Energy, I want a solar quotation.\nName: ' + data.name +
+      '\nPhone: ' + data.phone + '\nLocation: ' + data.location
+    );
+
     if (formMessage) {
-      formMessage.innerHTML = '❌ We could not send your request right now. Please call <a href="tel:+919284081148">9284081148</a> or use WhatsApp.';
+      formMessage.innerHTML =
+        '⚠️ Email delivery is temporarily unavailable. Please use one of these options:<br><br>' +
+        '<a class="btn" href="' + mailto + '">📧 Open Email</a> ' +
+        '<a class="btn whatsapp" href="' + whatsapp + '" target="_blank" rel="noopener noreferrer">💬 WhatsApp</a>';
       formMessage.className = 'form-message error';
     }
   }
 }
-
 if (contactForm) contactForm.addEventListener('submit', submitForm);
 
 // Smooth scrolling and reveal animations
