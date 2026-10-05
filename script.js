@@ -106,7 +106,7 @@ document.querySelectorAll('.testimonial-card').forEach((card, index) => {
 const contactForm = document.getElementById('contact-form');
 const formMessage = document.getElementById('form-message');
 
-function submitForm(event) {
+async function submitForm(event) {
   event.preventDefault();
 
   const data = {
@@ -119,7 +119,7 @@ function submitForm(event) {
     message: document.getElementById('message')?.value.trim() || ''
   };
 
-  if (!/^\d{10}$/.test(data.phone.replace(/\D/g, ''))) {
+  if (!/^\\d{10}$/.test(data.phone.replace(/\\D/g, ''))) {
     if (formMessage) {
       formMessage.textContent = 'Please enter a valid 10-digit phone number.';
       formMessage.className = 'form-message error';
@@ -135,17 +135,63 @@ function submitForm(event) {
     return;
   }
 
-  localStorage.setItem('lastQuotationRequest', JSON.stringify(data));
-
-  const message = `Hello Swamini Green Energy,\n\nName: ${data.name}\nPhone: ${data.phone}\nLocation: ${data.location}\nMonthly Consumption: ${data.consumption} kWh\nProperty Type: ${data.propertyType}\n${data.message}`;
-  const whatsapp = `https://wa.me/919284081148?text=${encodeURIComponent(message)}`;
-
   if (formMessage) {
-    formMessage.innerHTML = `✅ Request received! <a class="btn whatsapp" href="${whatsapp}" target="_blank" rel="noopener noreferrer">💬 Send via WhatsApp</a>`;
-    formMessage.className = 'form-message success';
+    formMessage.textContent = 'Sending your quotation request...';
+    formMessage.className = 'form-message';
   }
 
-  if (contactForm) contactForm.reset();
+  const formData = new FormData();
+  formData.append('_subject', 'New Solar Quotation Request - Swamini Green Energy');
+  formData.append('_captcha', 'false');
+  formData.append('_template', 'table');
+  formData.append('Customer Name', data.name);
+  formData.append('Phone Number', data.phone);
+  formData.append('Email Address', data.email || 'Not provided');
+  formData.append('Location', data.location);
+  formData.append('Monthly Electricity Consumption', data.consumption + ' kWh');
+  formData.append('Property Type', data.propertyType);
+  formData.append('Customer Message', data.message || 'No additional message');
+
+  try {
+    const response = await fetch('https://formsubmit.co/ajax/ghorpaderaj0@gmail.com', {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    const result = await response.json();
+
+    if (!response.ok || result.success !== 'true') {
+      throw new Error('Form submission failed');
+    }
+
+    localStorage.setItem('lastQuotationRequest', JSON.stringify(data));
+
+    const message = `Hello Swamini Green Energy,
+
+Name: ${data.name}
+Phone: ${data.phone}
+Location: ${data.location}
+Monthly Consumption: ${data.consumption} kWh
+Property Type: ${data.propertyType}
+${data.message}`;
+
+    const whatsapp = `https://wa.me/919284081148?text=${encodeURIComponent(message)}`;
+
+    if (formMessage) {
+      formMessage.innerHTML = `✅ Quotation request sent successfully! We will contact you soon.<br><br><a class="btn whatsapp" href="${whatsapp}" target="_blank" rel="noopener noreferrer">💬 Also Send via WhatsApp</a>`;
+      formMessage.className = 'form-message success';
+    }
+
+    if (contactForm) contactForm.reset();
+  } catch (error) {
+    console.error('Quotation form error:', error);
+
+    if (formMessage) {
+      formMessage.innerHTML = '❌ We could not send your request right now. Please call <a href="tel:+919284081148">9284081148</a> or use WhatsApp.';
+      formMessage.className = 'form-message error';
+    }
+  }
 }
 
 if (contactForm) contactForm.addEventListener('submit', submitForm);
