@@ -1021,26 +1021,14 @@ footer b {
 .delete-project-btn { margin:10px auto 20px; padding:8px 16px; border:1px solid rgba(255,255,255,.25); border-radius:30px; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
 @media(max-width:600px){.project-form-panel{padding:20px}.dynamic-project-image{height:220px}}
 
-/* ===== Our Partners ===== */
-.partners-section { background: rgba(13, 90, 61, 0.22); border-top: 2px solid rgba(247,181,0,.18); border-bottom: 2px solid rgba(247,181,0,.18); }
-.partners-intro { max-width: 760px; margin: -18px auto 35px; text-align: center; color: #c2d9cf; }
-.partners-grid { display:grid; grid-template-columns:repeat(3, minmax(0,1fr)); gap:28px; max-width:1000px; margin:0 auto; }
-.partner-card { background:rgba(255,255,255,.09); border:2px solid rgba(255,255,255,.14); border-radius:20px; padding:28px 22px; text-align:center; transition:.3s ease; box-shadow:0 10px 30px rgba(8,116,67,.22); }
-.partner-card:hover { transform:translateY(-8px); border-color:#f7b500; box-shadow:0 15px 35px rgba(247,181,0,.25); }
-.partner-logo { height:105px; display:flex; align-items:center; justify-content:center; gap:8px; margin-bottom:18px; background:#fff; border-radius:14px; color:#111; padding:14px; }
-.partner-logo span { font-size:42px; font-weight:800; }
-.partner-logo strong { font-size:30px; font-weight:800; letter-spacing:-1px; }
-.partner-logo em { font-size:18px; font-style:normal; font-weight:700; align-self:flex-end; margin-bottom:24px; }
-.waaree-logo { color:#168b61; }
-.waaree-logo span { border:3px solid #168b61; border-radius:50%; width:52px; height:52px; display:flex; align-items:center; justify-content:center; }
-.adani-logo { color:#168b61; }
-.adani-logo span { color:#f5a800; font-size:42px; }
-.adani-logo strong { font-size:34px; text-transform:lowercase; }
-.adani-logo em { color:#777; }
-.vikram-logo { color:#006b55; }
-.vikram-logo span { background:#f7b500; color:#fff; width:48px; height:48px; border-radius:50%; display:flex; align-items:center; justify-content:center; }
-.vikram-logo strong { font-size:29px; }
-.vikram-logo em { color:#777; }
-.partner-card h3 { color:#f7b500; margin:8px 0; font-size:1.35rem; }
-.partner-card p { color:#c2d9cf; margin:0; }
-@media(max-width:768px){ .partners-grid { grid-template-columns:1fr; max-width:420px; } }
+/* ===== Our Partners Logo Slider ===== */
+.partners-section { background: rgba(13, 90, 61, 0.22); border-top: 2px solid rgba(247,181,0,.18); border-bottom: 2px solid rgba(247,181,0,.18); overflow:hidden; }
+.partners-intro { max-width:760px; margin:-18px auto 35px; text-align:center; color:#c2d9cf; }
+.partners-slider { width:100%; overflow:hidden; padding:10px 0 25px; position:relative; }
+.partners-track { display:flex; align-items:center; gap:28px; width:max-content; animation:partnerSlide 18s linear infinite; }
+.partners-slider:hover .partners-track { animation-play-state:paused; }
+.partner-logo-card { width:270px; height:150px; flex:0 0 270px; display:flex; align-items:center; justify-content:center; padding:24px; background:#fff; border:2px solid rgba(255,255,255,.2); border-radius:18px; box-shadow:0 10px 30px rgba(8,116,67,.25); transition:.3s ease; }
+.partner-logo-card:hover { transform:translateY(-5px); border-color:#f7b500; box-shadow:0 15px 35px rgba(247,181,0,.25); }
+.partner-logo-card img { width:100%; height:100%; object-fit:contain; display:block; }
+@keyframes partnerSlide { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 14px)); } }
+@media(max-width:600px){ .partner-logo-card { width:220px; height:125px; flex-basis:220px; padding:18px; } .partners-track { gap:18px; animation-duration:15s; } }
