@@ -1048,3 +1048,18 @@ footer b {
 /* Keep Adani Solar and Vikram Solar logos the same fitted size as Waaree. */
 @keyframes partnerSlide { from { transform:translateX(0); } to { transform:translateX(calc(-50% - 14px)); } }
 @media(max-width:600px){ .partner-logo-card { width:220px; height:125px; flex-basis:220px; padding:18px; } .partners-track { gap:18px; animation-duration:15s; } }
+
+
+/* Balance Adani Solar and Vikram Solar logo size inside partner cards. */
+.partners-track .partner-logo-card:nth-child(2) img,
+.partners-track .partner-logo-card:nth-child(3) img,
+.partners-track .partner-logo-card:nth-child(5) img,
+.partners-track .partner-logo-card:nth-child(6) img {
+  width: 82%;
+  height: 82%;
+  max-width: 82%;
+  max-height: 82%;
+  object-fit: contain;
+  object-position: center;
+  margin: auto;
+}
