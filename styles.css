@@ -1021,6 +1021,19 @@ footer b {
 .delete-project-btn { margin:10px auto 20px; padding:8px 16px; border:1px solid rgba(255,255,255,.25); border-radius:30px; background:rgba(255,255,255,.08); color:#fff; cursor:pointer; }
 @media(max-width:600px){.project-form-panel{padding:20px}.dynamic-project-image{height:220px}}
 
+/* ===== Waaree Expert Trust Banner ===== */
+.waaree-expert-section { padding-top:22px; padding-bottom:22px; }
+.waaree-expert-badge { max-width:1100px; margin:0 auto; padding:22px 28px; display:flex; align-items:center; gap:24px; position:relative; overflow:hidden; border:2px solid #f7b500; border-radius:20px; background:linear-gradient(110deg,#fff 0%,#f8fff9 68%,#e7f6ec 100%); color:#124c32; box-shadow:0 12px 32px rgba(0,0,0,.18); }
+.waaree-mark { flex:0 0 150px; width:150px; height:90px; display:flex; align-items:center; justify-content:center; }
+.waaree-mark img { width:100%; height:100%; object-fit:contain; }
+.waaree-expert-copy { position:relative; z-index:1; }
+.waaree-eyebrow { margin:0 0 4px; color:#087443; font-size:.82rem; font-weight:800; text-transform:uppercase; letter-spacing:.08em; }
+.waaree-expert-copy h2 { margin:0 0 6px; color:#0d5a3d; font-size:clamp(1.15rem,2.5vw,1.7rem); line-height:1.25; }
+.waaree-expert-copy p:not(.waaree-eyebrow) { margin:0 0 8px; color:#3c594a; }
+.waaree-learn-link { color:#087443; font-weight:700; text-decoration:underline; text-underline-offset:3px; }
+.waaree-sun-symbol { margin-left:auto; flex:0 0 auto; color:#f7b500; font-size:58px; line-height:1; text-shadow:0 2px 0 rgba(13,90,61,.12); }
+@media(max-width:600px) { .waaree-expert-section { padding:18px 4%; } .waaree-expert-badge { padding:18px; gap:14px; align-items:flex-start; } .waaree-mark { flex-basis:90px; width:90px; height:65px; } .waaree-sun-symbol { display:none; } .waaree-expert-copy h2 { font-size:1.1rem; } .waaree-expert-copy p:not(.waaree-eyebrow) { font-size:.9rem; } .waaree-eyebrow { font-size:.68rem; } }
+ 
 /* ===== Our Partners Logo Slider ===== */
 .partners-section { background: rgba(13, 90, 61, 0.22); border-top: 2px solid rgba(247,181,0,.18); border-bottom: 2px solid rgba(247,181,0,.18); overflow:hidden; }
 .partners-intro { max-width:760px; margin:-18px auto 35px; text-align:center; color:#c2d9cf; }
